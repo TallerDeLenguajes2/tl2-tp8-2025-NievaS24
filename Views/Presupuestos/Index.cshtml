@@ -20,7 +20,8 @@
                 <td>@p.NombreDestinatario</td>
                 <td>@p.FechaCreacion.ToString()</td>
                 <td>
-                    <a class="btn btn-sm btn-primary"> Ver detalle </a>
+                    <a class="btn btn-sm btn-primary" asp-controller="Presupuestos" asp-action="Details"
+                        asp-route-id="@p.idPresupuesto"> Ver detalle </a>
                 </td>
             </tr>
         }
