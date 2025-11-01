@@ -1,4 +1,4 @@
-namespace tl2_tp7_2025_NievaS24.Models;
+namespace tl2_tp8_2025_NievaS24.Models;
 
 public class PresupuestosDetalle
 {

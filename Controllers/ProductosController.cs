@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using tl2_tp7_2025_NievaS24.Models;
-using tl2_tp7_2025_NievaS24.Repository;
 using tl2_tp8_2025_NievaS24.Models;
+using tl2_tp8_2025_NievaS24.Repository;
 
 namespace tl2_tp8_2025_NievaS24.Controllers;
 

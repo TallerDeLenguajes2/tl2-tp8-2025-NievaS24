@@ -1,7 +1,7 @@
-using tl2_tp7_2025_NievaS24.Models;
+using tl2_tp8_2025_NievaS24.Models;
 using Microsoft.Data.Sqlite;
 
-namespace tl2_tp7_2025_NievaS24.Repository;
+namespace tl2_tp8_2025_NievaS24.Repository;
 
 public class ProductoRepository
 {
