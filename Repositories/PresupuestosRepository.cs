@@ -23,36 +23,45 @@ public class PresupuestosRepository
         List<Presupuestos> presupuestos = [];
         using var con = new SqliteConnection(cadenaConexion);
         con.Open();
-        string sql = "SELECT * FROM Presupuestos";
+        string sql = "SELECT * FROM Presupuestos INNER JOIN PresupuestosDetalle USING(idPresupuesto) INNER JOIN Productos USING(idProducto) ORDER BY idPresupuesto;";
         using var cmd = new SqliteCommand(sql, con);
         using SqliteDataReader reader = cmd.ExecuteReader();
         while (reader.Read())
         {
-            var presupuesto = new Presupuestos
+            int idPresupuestoActual = Convert.ToInt32(reader["idPresupuesto"]);
+            Presupuestos presupuesto = null;
+            foreach (var pre in presupuestos) //Controlo si ya existe el presupuesto
             {
-                idPresupuesto = Convert.ToInt32(reader["idPresupuesto"]),
-                NombreDestinatario = reader["NombreDestinatario"].ToString(),
-                FechaCreacion = DateOnly.Parse(reader["FechaCreacion"].ToString()),
-                detalles = []
-            };
-            presupuestos.Add(presupuesto);
-        }
-        string sql2 = "SELECT * FROM PresupuestosDetalle LEFT JOIN Productos using (idProducto)";
-        using var cmd2 = new SqliteCommand(sql2, con);
-        using SqliteDataReader reader2 = cmd2.ExecuteReader();
-        while (reader2.Read())
-        {
-            var detalle = new PresupuestosDetalle
+                if (pre.idPresupuesto == idPresupuestoActual)
+                {
+                    presupuesto = pre;
+                    break;
+                }
+            }
+
+            if (presupuesto == null) //Si no existe lo creo
+            {
+                presupuesto = new Presupuestos
+                {
+                    idPresupuesto = idPresupuestoActual,
+                    NombreDestinatario = reader["NombreDestinatario"].ToString(),
+                    FechaCreacion = DateOnly.Parse(reader["FechaCreacion"].ToString()),
+                    detalles = []
+                };
+                presupuestos.Add(presupuesto);
+            }
+
+            //Agrego los productos al presupusto que pretenece
+            presupuesto.detalles.Add(new PresupuestosDetalle
             {
                 Producto = new Productos
                 {
-                    idProducto = Convert.ToInt32(reader2["idProducto"]),
-                    Descripcion = reader2["Descripcion"].ToString(),
-                    Precio = Convert.ToInt32(reader2["Precio"])
+                    idProducto = Convert.ToInt32(reader["idProducto"]),
+                    Descripcion = reader["Descripcion"].ToString(),
+                    Precio = Convert.ToInt32(reader["Precio"])
                 },
-                Cantidad = Convert.ToInt32(reader2["Cantidad"])
-            };
-            presupuestos.FirstOrDefault(p => p.idPresupuesto == Convert.ToInt32(reader2["idPresupuesto"])).detalles.Add(detalle);
+                Cantidad = Convert.ToInt32(reader["Cantidad"])
+            });
         }
         con.Close();
         return presupuestos;
@@ -62,35 +71,35 @@ public class PresupuestosRepository
     {
         using var con = new SqliteConnection(cadenaConexion);
         con.Open();
-        string sql = "SELECT * FROM Presupuestos WHERE idPresupuesto = @idPresupuesto";
+        string sql = "SELECT * FROM Presupuestos INNER JOIN PresupuestosDetalle USING(idPresupuesto) INNER JOIN Productos USING(idProducto) WHERE idPresupuesto = @idPresupuesto; ";
         using var cmd = new SqliteCommand(sql, con);
         cmd.Parameters.Add(new SqliteParameter("@idPresupuesto", id));
         using SqliteDataReader reader = cmd.ExecuteReader();
-        if (!reader.Read()) throw new KeyNotFoundException($"El presupuesto {id} no existe");
-        var presupuesto = new Presupuestos
+        if (!reader.HasRows) throw new KeyNotFoundException($"El presupuesto {id} no existe");
+        Presupuestos presupuesto = null;
+        while (reader.Read())
         {
-            idPresupuesto = Convert.ToInt32(reader["idPresupuesto"]),
-            NombreDestinatario = reader["NombreDestinatario"].ToString(),
-            FechaCreacion = DateOnly.Parse(reader["FechaCreacion"].ToString()),
-            detalles = []
-        };
-        string sql2 = "SELECT * FROM PresupuestosDetalle LEFT JOIN Productos using (idProducto) WHERE idPresupuesto = @idPresupuesto";
-        using var cmd2 = new SqliteCommand(sql2, con);
-        cmd2.Parameters.Add(new SqliteParameter("@idPresupuesto", id));
-        using SqliteDataReader reader2 = cmd2.ExecuteReader();
-        while (reader2.Read())
-        {
-            var detalle = new PresupuestosDetalle
+            if (presupuesto == null) //Lo creo por una unica vez
+            {
+                presupuesto = new Presupuestos
+                {
+                    idPresupuesto = Convert.ToInt32(reader["idPresupuesto"]),
+                    NombreDestinatario = reader["NombreDestinatario"].ToString(),
+                    FechaCreacion = DateOnly.Parse(reader["FechaCreacion"].ToString()),
+                    detalles = []
+                };
+            }
+            //Agrego los productos al presupusto
+            presupuesto.detalles.Add(new PresupuestosDetalle
             {
                 Producto = new Productos
                 {
-                    idProducto = Convert.ToInt32(reader2["idProducto"]),
-                    Descripcion = reader2["Descripcion"].ToString(),
-                    Precio = Convert.ToInt32(reader2["Precio"])
+                    idProducto = Convert.ToInt32(reader["idProducto"]),
+                    Descripcion = reader["Descripcion"].ToString(),
+                    Precio = Convert.ToInt32(reader["Precio"])
                 },
-                Cantidad = Convert.ToInt32(reader2["Cantidad"])
-            };
-            presupuesto.detalles.Add(detalle);
+                Cantidad = Convert.ToInt32(reader["Cantidad"])
+            });
         }
         con.Close();
         return presupuesto;
@@ -112,12 +121,12 @@ public class PresupuestosRepository
     {
         using var con = new SqliteConnection(cadenaConexion);
         con.Open();
-        string sql = "SELECT idPresupuesto FROM Presupuestos WHERE idPresupuesto = @idPresupuesto"; 
+        string sql = "SELECT idPresupuesto FROM Presupuestos WHERE idPresupuesto = @idPresupuesto";
         using var cmd = new SqliteCommand(sql, con);
         cmd.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
         using SqliteDataReader reader = cmd.ExecuteReader();
         if (!reader.Read()) throw new KeyNotFoundException($"El presupuesto {idPresupuesto} no existe");
-        string sql2 = "SELECT idProducto FROM Productos WHERE idProducto = @idProducto"; 
+        string sql2 = "SELECT idProducto FROM Productos WHERE idProducto = @idProducto";
         using var cmd2 = new SqliteCommand(sql2, con);
         cmd2.Parameters.Add(new SqliteParameter("@idProducto", idProducto));
         using SqliteDataReader reader2 = cmd2.ExecuteReader();
