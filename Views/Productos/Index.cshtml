@@ -1,0 +1,11 @@
+@using tl2_tp7_2025_NievaS24.Models
+@model List<Productos>
+<h1 class="text-center"> PRODUCTOS </h1>
+<ul class="list-group">
+    @foreach (Productos prod in Model)
+    {
+        <h3> Producto @prod.idProducto</h3>
+        <li class="list-group-item">Descripcion: @prod.Descripcion</li>
+        <li class="list-group-item">Precio: $@prod.Precio</li>
+    }
+</ul>
