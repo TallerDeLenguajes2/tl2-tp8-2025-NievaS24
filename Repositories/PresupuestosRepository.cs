@@ -23,46 +23,60 @@ public class PresupuestosRepository
         List<Presupuestos> presupuestos = [];
         using var con = new SqliteConnection(cadenaConexion);
         con.Open();
-        string sql = "SELECT * FROM Presupuestos INNER JOIN PresupuestosDetalle USING(idPresupuesto) INNER JOIN Productos USING(idProducto) ORDER BY idPresupuesto;";
+        string sql = "SELECT * FROM Presupuestos;";
         using var cmd = new SqliteCommand(sql, con);
         using SqliteDataReader reader = cmd.ExecuteReader();
         while (reader.Read())
         {
-            int idPresupuestoActual = Convert.ToInt32(reader["idPresupuesto"]);
-            Presupuestos presupuesto = null;
-            foreach (var pre in presupuestos) //Controlo si ya existe el presupuesto
+            var presupuesto = new Presupuestos
             {
-                if (pre.idPresupuesto == idPresupuestoActual)
-                {
-                    presupuesto = pre;
-                    break;
-                }
-            }
-
-            if (presupuesto == null) //Si no existe lo creo
-            {
-                presupuesto = new Presupuestos
-                {
-                    idPresupuesto = idPresupuestoActual,
-                    NombreDestinatario = reader["NombreDestinatario"].ToString(),
-                    FechaCreacion = DateOnly.Parse(reader["FechaCreacion"].ToString()),
-                    detalles = []
-                };
-                presupuestos.Add(presupuesto);
-            }
-
-            //Agrego los productos al presupusto que pretenece
-            presupuesto.detalles.Add(new PresupuestosDetalle
-            {
-                Producto = new Productos
-                {
-                    idProducto = Convert.ToInt32(reader["idProducto"]),
-                    Descripcion = reader["Descripcion"].ToString(),
-                    Precio = Convert.ToInt32(reader["Precio"])
-                },
-                Cantidad = Convert.ToInt32(reader["Cantidad"])
-            });
+                idPresupuesto = Convert.ToInt32(reader["idPresupuesto"]),
+                NombreDestinatario = reader["NombreDestinatario"].ToString(),
+                FechaCreacion = DateOnly.Parse(reader["FechaCreacion"].ToString()),
+                detalles = []
+            };
+            presupuestos.Add(presupuesto);
         }
+        // string sql = "SELECT * FROM Presupuestos INNER JOIN PresupuestosDetalle USING(idPresupuesto) INNER JOIN Productos USING(idProducto) ORDER BY idPresupuesto;";
+        // using var cmd = new SqliteCommand(sql, con);
+        // using SqliteDataReader reader = cmd.ExecuteReader();
+        // while (reader.Read())
+        // {
+        //     int idPresupuestoActual = Convert.ToInt32(reader["idPresupuesto"]);
+        //     Presupuestos presupuesto = null;
+        //     foreach (var pre in presupuestos) //Controlo si ya existe el presupuesto
+        //     {
+        //         if (pre.idPresupuesto == idPresupuestoActual)
+        //         {
+        //             presupuesto = pre;
+        //             break;
+        //         }
+        //     }
+
+        //     if (presupuesto == null) //Si no existe lo creo
+        //     {
+        //         presupuesto = new Presupuestos
+        //         {
+        //             idPresupuesto = idPresupuestoActual,
+        //             NombreDestinatario = reader["NombreDestinatario"].ToString(),
+        //             FechaCreacion = DateOnly.Parse(reader["FechaCreacion"].ToString()),
+        //             detalles = []
+        //         };
+        //         presupuestos.Add(presupuesto);
+        //     }
+
+        //     //Agrego los productos al presupusto que pretenece
+        //     presupuesto.detalles.Add(new PresupuestosDetalle
+        //     {
+        //         Producto = new Productos
+        //         {
+        //             idProducto = Convert.ToInt32(reader["idProducto"]),
+        //             Descripcion = reader["Descripcion"].ToString(),
+        //             Precio = Convert.ToInt32(reader["Precio"])
+        //         },
+        //         Cantidad = Convert.ToInt32(reader["Cantidad"])
+        //     });
+        // }
         con.Close();
         return presupuestos;
     }

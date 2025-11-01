@@ -1,32 +1,28 @@
 @using tl2_tp7_2025_NievaS24.Models
 @model List<Presupuestos>
-<h1 class="text-center my-4 text-primary fw-bold"> PRESUPUESTOS </h1>
-<div class="container bg-light">
-    @foreach (Presupuestos prod in Model)
-    {
-        <div class="card mb-4 shadow-sm border-0">
-            <div class="card-body">
-                <h5 card-title text-primary mb-3> Presupuesto #@prod.idPresupuesto</h5>
-                <p class="mb-1"><strong>Destinatario:</strong> @prod.NombreDestinatario</p>
-                <p class="mb-3"><strong>Fecha de creación:</strong> @prod.FechaCreacion.ToString()</p>
-                <ul class="list-group-item list-group-flush">
-                    @foreach (PresupuestosDetalle detalle in prod.detalles)
-                    {
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">@detalle.Producto.Descripcion</h6>
-                                    <small class="text-muted">ID: @detalle.Producto.idProducto</small>
-                                </div>
-                                <div class="text-end">
-                                    <div><strong>$@detalle.Producto.Precio</strong></div>
-                                    <small>Cant: @detalle.Cantidad</small>
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    }
-</div>
+
+<h2 class="text-center my-4">Presupuestos</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Destinatario</th>
+            <th>Fecha de creación</th>
+            <th>Detalles</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Presupuestos p in Model)
+        {
+            <tr>
+                <td>@p.idPresupuesto</td>
+                <td>@p.NombreDestinatario</td>
+                <td>@p.FechaCreacion.ToString()</td>
+                <td>
+                    <a class="btn btn-sm btn-primary"> Ver detalle </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

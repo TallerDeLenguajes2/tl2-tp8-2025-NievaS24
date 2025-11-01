@@ -1,21 +1,24 @@
 @using tl2_tp7_2025_NievaS24.Models
 @model List<Productos>
-<h1 class="text-center my-4 text-primary fw-bold"> PRODUCTOS </h1>
-<div class="container bg-light">
-    <ul class="list-group-item list-group-flush">
-        @foreach (Productos producto in Model)
+
+<h2 class="text-center my-4">Productos</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descripcion</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Productos p in Model)
         {
-            <li class="list-group-item">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-1">@producto.Descripcion</h6>
-                        <small class="text-muted">ID: @producto.idProducto</small>
-                    </div>
-                    <div class="text-end">
-                        <strong>$@producto.Precio</strong>
-                    </div>
-                </div>
-            </li>
+            <tr>
+                <td>@p.idProducto</td>
+                <td>@p.Descripcion</td>
+                <td>$@p.Precio</td>
+            </tr>
         }
-    </ul>
-</div>
+    </tbody>
+</table>
