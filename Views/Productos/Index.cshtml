@@ -14,6 +14,7 @@
             <th>Descripcion</th>
             <th>Precio</th>
             <th>Editar</th>
+            <th>Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,8 @@
                 <td>$@p.Precio</td>
                 <td><a asp-controller="Productos" asp-action="Update" asp-route-id="@p.idProducto"
                         class="text-decoration-none">✏</a></td>
+                <td><a asp-controller="Productos" asp-action="Delete" asp-route-id="@p.idProducto"
+                        class="text-decoration-none">🗑</a></td>
             </tr>
         }
     </tbody>
