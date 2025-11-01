@@ -19,4 +19,17 @@ public class ProductosController : Controller
         return View(productos);
     }
 
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View(new Productos());
+    }
+
+
+    [HttpPost]
+    public IActionResult Create(Productos producto)
+    {
+        productoRepository.Create(producto);
+        return RedirectToAction("Index");
+    }
 }
