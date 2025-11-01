@@ -13,6 +13,7 @@
             <th>ID</th>
             <th>Descripcion</th>
             <th>Precio</th>
+            <th>Editar</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,8 @@
                 <td>@p.idProducto</td>
                 <td>@p.Descripcion</td>
                 <td>$@p.Precio</td>
+                <td><a asp-controller="Productos" asp-action="Update" asp-route-id="@p.idProducto"
+                        class="text-decoration-none">✏</a></td>
             </tr>
         }
     </tbody>

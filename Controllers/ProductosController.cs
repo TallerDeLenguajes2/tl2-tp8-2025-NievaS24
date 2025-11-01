@@ -32,4 +32,18 @@ public class ProductosController : Controller
         productoRepository.Create(producto);
         return RedirectToAction("Index");
     }
+
+    [HttpGet]
+    public IActionResult Update(int id)
+    {
+        return View(productoRepository.GetById(id));
+    }
+
+
+    [HttpPost]
+    public IActionResult Update(Productos producto)
+    {
+        productoRepository.Update(producto.idProducto, producto);
+        return RedirectToAction("Index");
+    }
 }
