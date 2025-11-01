@@ -46,4 +46,18 @@ public class ProductosController : Controller
         productoRepository.Update(producto.idProducto, producto);
         return RedirectToAction("Index");
     }
+
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        Productos prodABorrar = productoRepository.GetById(id);
+        return View(prodABorrar);
+    }
+
+    [HttpPost]
+    public IActionResult DeleteConfirmed(int idProducto)
+    {
+        productoRepository.Delete(idProducto);
+        return RedirectToAction("Index");
+    }
 }

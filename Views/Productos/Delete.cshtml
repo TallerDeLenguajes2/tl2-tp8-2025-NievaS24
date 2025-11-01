@@ -1,0 +1,22 @@
+@using tl2_tp8_2025_NievaS24.Models
+@model Productos
+
+<div class="card shadow-sm mx-auto">
+    <div class="card-body text-center">
+        <h5 class="card-title mb-3 text-secondary">¿Estás seguro que querés eliminar este producto?</h5>
+
+        <ul class="list-group list-group-flush text-start mb-4">
+            <li class="list-group-item"><strong>ID:</strong> @Model.idProducto</li>
+            <li class="list-group-item"><strong>Descripción:</strong> @Model.Descripcion</li>
+            <li class="list-group-item"><strong>Precio:</strong> $@Model.Precio</li>
+        </ul>
+
+        <form asp-controller="Productos" asp-action="DeleteConfirmed" method="post">
+            <input hidden asp-for="idProducto">
+            <button type="submit" class="btn btn-danger px-4 mr-2">Eliminar</button>
+            <a asp-controller="Productos" asp-action="Index" class="btn btn-secondary px-4">
+                Cancelar
+            </a>
+        </form>
+    </div>
+</div>
