@@ -32,4 +32,46 @@ public class PresupuestosController : Controller
         }
 
     }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View(new Presupuestos());
+    }
+
+
+    [HttpPost]
+    public IActionResult Create(Presupuestos presupuesto)
+    {
+        presupuestosRepository.Create(presupuesto);
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public IActionResult Update(int id)
+    {
+        return View(presupuestosRepository.GetById(id));
+    }
+
+
+    [HttpPost]
+    public IActionResult Update(Presupuestos presupuesto)
+    {
+        presupuestosRepository.Update(presupuesto.idPresupuesto, presupuesto);
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        Presupuestos preABorrar = presupuestosRepository.GetById(id);
+        return View(preABorrar);
+    }
+
+    [HttpPost]
+    public IActionResult DeleteConfirmed(int idPresupuesto)
+    {
+        presupuestosRepository.Delete(idPresupuesto);
+        return RedirectToAction("Index");
+    }
 }

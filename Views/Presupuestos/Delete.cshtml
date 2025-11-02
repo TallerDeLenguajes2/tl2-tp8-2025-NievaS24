@@ -1,0 +1,22 @@
+@using tl2_tp8_2025_NievaS24.Models
+@model Presupuestos
+
+<div class="card shadow-sm mx-auto">
+    <div class="card-body text-center">
+        <h5 class="card-title mb-3 text-secondary">¿Estás seguro que querés eliminar este presupuesto?</h5>
+
+        <ul class="list-group list-group-flush text-start mb-4">
+            <li class="list-group-item"><strong>ID:</strong> @Model.idPresupuesto</li>
+            <li class="list-group-item"><strong>Destinatario:</strong> @Model.NombreDestinatario</li>
+            <li class="list-group-item"><strong>Fecha de creación:</strong> $@Model.FechaCreacion</li>
+        </ul>
+
+        <form asp-controller="Presupuestos" asp-action="DeleteConfirmed" method="post">
+            <input hidden asp-for="idPresupuesto">
+            <button type="submit" class="btn btn-danger px-4 mr-2">Eliminar</button>
+            <a asp-controller="Presupuestos" asp-action="Index" class="btn btn-secondary px-4">
+                Cancelar
+            </a>
+        </form>
+    </div>
+</div>
