@@ -11,5 +11,5 @@ public class ProductoViewModel
     [Display(Name = "Precio Unitario")]
     [Required(ErrorMessage = "El precio es obligatorio.")]
     [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser un valor positivo.")]
-    public decimal Precio { get; set; }
+    public double Precio { get; set; }
 }

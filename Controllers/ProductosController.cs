@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp8_2025_NievaS24.Models;
 using tl2_tp8_2025_NievaS24.Repository;
+using tl2_tp8_2025_NievaS24.ViewModels;
 
 namespace tl2_tp8_2025_NievaS24.Controllers;
 
@@ -22,14 +23,23 @@ public class ProductosController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Productos());
+        return View();
     }
 
 
     [HttpPost]
-    public IActionResult Create(Productos producto)
+    public IActionResult Create(ProductoViewModel productoVM)
     {
-        productoRepository.Create(producto);
+        if (!ModelState.IsValid)
+        {
+            return View(productoVM);
+        }
+        var nuevoProducto = new Productos
+        {
+            Descripcion = productoVM.Descripcion,
+            Precio = productoVM.Precio
+        };
+        productoRepository.Create(nuevoProducto);
         return RedirectToAction("Index");
     }
 
