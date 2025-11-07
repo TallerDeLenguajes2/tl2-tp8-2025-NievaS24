@@ -1,17 +1,27 @@
-@using tl2_tp8_2025_NievaS24.Models;
-@model Productos
+@using tl2_tp8_2025_NievaS24.Models
+@using tl2_tp8_2025_NievaS24.ViewModels
+@model ProductoViewModel
+
+@{
+    ViewData[index: "Title"] = "Editar Producto";
+}
 
 
 <form asp-controller="Productos" asp-action="Update" method="post">
     <input hidden asp-for="idProducto">
     <div class="form-group">
-        <label asp-for="Descripcion"></label>
+        <label asp-for="Descripcion" class="control-label"></label>
         <input asp-for="Descripcion" class="form-control" />
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Precio"></label>
+        <label asp-for="Precio" class="control-label"></label>
         <input asp-for="Precio" class="form-control" />
+        <span asp-validation-for="Precio" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary mt-4">Editar</button>
 </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

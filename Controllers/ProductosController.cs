@@ -46,14 +46,31 @@ public class ProductosController : Controller
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(productoRepository.GetById(id));
+        var producto = productoRepository.GetById(id);
+        var productoAEditar = new ProductoViewModel
+        {
+            idProducto = producto.idProducto,
+            Descripcion = producto.Descripcion,
+            Precio = producto.Precio
+        };
+        return View(productoAEditar);
     }
 
 
     [HttpPost]
-    public IActionResult Update(Productos producto)
+    public IActionResult Update(ProductoViewModel productoVM)
     {
-        productoRepository.Update(producto.idProducto, producto);
+        if (!ModelState.IsValid)
+        {
+            return View(productoVM);
+        }
+        var productoEditado = new Productos
+        {
+            idProducto = productoVM.idProducto,
+            Descripcion = productoVM.Descripcion,
+            Precio = productoVM.Precio
+        };
+        productoRepository.Update(productoEditado.idProducto, productoEditado);
         return RedirectToAction("Index");
     }
 
