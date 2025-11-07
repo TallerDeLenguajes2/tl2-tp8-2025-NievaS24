@@ -60,14 +60,31 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(presupuestosRepository.GetById(id));
+        var presupuesto = presupuestosRepository.GetById(id);
+        var presupuestoAEditar = new PresupuestoViewModel
+        {
+            idPresupuesto = presupuesto.idPresupuesto,
+            NombreDestinatario = presupuesto.NombreDestinatario,
+            FechaCreacion = presupuesto.FechaCreacion
+        };
+        return View(presupuestoAEditar);
     }
 
 
     [HttpPost]
-    public IActionResult Update(Presupuestos presupuesto)
+    public IActionResult Update(PresupuestoViewModel presupuestoVM)
     {
-        presupuestosRepository.Update(presupuesto.idPresupuesto, presupuesto);
+        if (!ModelState.IsValid)
+        {
+            return View(presupuestoVM);
+        }
+        var presupuestoEditado = new Presupuestos
+        {
+            idPresupuesto = presupuestoVM.idPresupuesto,
+            NombreDestinatario = presupuestoVM.NombreDestinatario,
+            FechaCreacion = presupuestoVM.FechaCreacion
+        };
+        presupuestosRepository.Update(presupuestoEditado.idPresupuesto, presupuestoEditado);
         return RedirectToAction("Index");
     }
 
