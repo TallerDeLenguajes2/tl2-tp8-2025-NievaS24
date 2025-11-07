@@ -3,7 +3,13 @@
 
 <h2 class="text-center my-4">Productos</h2>
 
-@if (Model.detalles.Count() > 0)
+<div class="text-center mb-4">
+    <a class="btn btn-primary btn-lg px-5" asp-controller="Presupuestos" asp-action="AgregarProducto"
+        asp-route-id="@Model.idPresupuesto"> Agregar Producto
+    </a>
+</div>
+
+@if (Model.detalles != null && Model.detalles.Any())
 {
     <table class="table table-striped table-hover">
         <thead>

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using tl2_tp8_2025_NievaS24.Models;
 using tl2_tp8_2025_NievaS24.Repository;
 using tl2_tp8_2025_NievaS24.ViewModels;
@@ -8,9 +9,11 @@ namespace tl2_tp8_2025_NievaS24.Controllers;
 public class PresupuestosController : Controller
 {
     private PresupuestosRepository presupuestosRepository;
+    private ProductoRepository productoRepository;
     public PresupuestosController()
     {
         presupuestosRepository = new PresupuestosRepository();
+        productoRepository = new ProductoRepository();
     }
 
     [HttpGet]
@@ -29,7 +32,7 @@ public class PresupuestosController : Controller
         }
         catch (KeyNotFoundException)
         {
-            return View();
+            return RedirectToAction("Index");
         }
 
     }
@@ -100,5 +103,30 @@ public class PresupuestosController : Controller
     {
         presupuestosRepository.Delete(idPresupuesto);
         return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public IActionResult AgregarProducto(int id)
+    {
+        List<Productos> productos = productoRepository.GetAll();
+        AgregarProductoViewModel model = new AgregarProductoViewModel
+        {
+            idPresupuesto = id,
+            ListaProductos = new SelectList(productos, "idProducto", "Descripcion")
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult AgregarProducto(AgregarProductoViewModel modelVM)
+    {
+        if (!ModelState.IsValid)
+        {
+            var productos = productoRepository.GetAll();
+            modelVM.ListaProductos = new SelectList(productos, "idProducto", "Descripcion");
+            return View(modelVM);
+        }
+        presupuestosRepository.CreateProd(modelVM.idPresupuesto, modelVM.idProducto, modelVM.Cantidad);
+        return RedirectToAction("Details", new { id = modelVM.idPresupuesto });
     }
 }
