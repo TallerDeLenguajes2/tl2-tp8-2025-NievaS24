@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp8_2025_NievaS24.Models;
 using tl2_tp8_2025_NievaS24.Repository;
+using tl2_tp8_2025_NievaS24.ViewModels;
 
 namespace tl2_tp8_2025_NievaS24.Controllers;
 
@@ -36,14 +37,23 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Presupuestos());
+        return View();
     }
 
 
     [HttpPost]
-    public IActionResult Create(Presupuestos presupuesto)
+    public IActionResult Create(PresupuestoViewModel presupuestoVM)
     {
-        presupuestosRepository.Create(presupuesto);
+        if (!ModelState.IsValid)
+        {
+            return View(presupuestoVM);
+        }
+        var nuevoPresupuesto = new Presupuestos
+        {
+            NombreDestinatario = presupuestoVM.NombreDestinatario,
+            FechaCreacion = presupuestoVM.FechaCreacion
+        };
+        presupuestosRepository.Create(nuevoPresupuesto);
         return RedirectToAction("Index");
     }
 
