@@ -1,9 +1,10 @@
 using tl2_tp8_2025_NievaS24.Models;
+using tl2_tp8_2025_NievaS24.Interface;
 using Microsoft.Data.Sqlite;
 
 namespace tl2_tp8_2025_NievaS24.Repository;
 
-public class PresupuestosRepository
+public class PresupuestosRepository : IPresupuestoRepository
 {
     private readonly string cadenaConexion = "Data Source=Tienda.db";
     public void Create(Presupuestos presupuesto)
