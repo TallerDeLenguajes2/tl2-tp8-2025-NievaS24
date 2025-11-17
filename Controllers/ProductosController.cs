@@ -90,4 +90,9 @@ public class ProductosController : Controller
         productoRepository.Delete(idProducto);
         return RedirectToAction("Index");
     }
+
+    public IActionResult AccesoDenegado()
+    {
+        return View();
+    }
 }

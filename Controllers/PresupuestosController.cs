@@ -132,4 +132,9 @@ public class PresupuestosController : Controller
         presupuestosRepository.CreateProd(modelVM.idPresupuesto, modelVM.idProducto, modelVM.Cantidad);
         return RedirectToAction("Details", new { id = modelVM.idPresupuesto });
     }
+
+    public IActionResult AccesoDenegado()
+    {
+        return View();
+    }
 }
