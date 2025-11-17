@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using tl2_tp8_2025_NievaS24.Interface;
 using tl2_tp8_2025_NievaS24.Models;
 using tl2_tp8_2025_NievaS24.Repository;
 using tl2_tp8_2025_NievaS24.ViewModels;
@@ -7,10 +8,12 @@ namespace tl2_tp8_2025_NievaS24.Controllers;
 
 public class ProductosController : Controller
 {
-    private ProductoRepository productoRepository;
-    public ProductosController()
+    private readonly IProductoRepository productoRepository;
+    private readonly IAuthenticationService servicio;
+    public ProductosController(IProductoRepository productoRepository, IAuthenticationService servicio)
     {
-        productoRepository = new ProductoRepository();
+        this.productoRepository = productoRepository;
+        this.servicio = servicio;
     }
 
     [HttpGet]

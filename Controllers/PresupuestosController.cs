@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using tl2_tp8_2025_NievaS24.Interface;
 using tl2_tp8_2025_NievaS24.Models;
 using tl2_tp8_2025_NievaS24.Repository;
 using tl2_tp8_2025_NievaS24.ViewModels;
@@ -8,12 +9,14 @@ namespace tl2_tp8_2025_NievaS24.Controllers;
 
 public class PresupuestosController : Controller
 {
-    private PresupuestosRepository presupuestosRepository;
-    private ProductoRepository productoRepository;
-    public PresupuestosController()
+    private IPresupuestoRepository presupuestosRepository;
+    private IProductoRepository productoRepository;
+    private readonly IAuthenticationService servicio;
+    public PresupuestosController(IPresupuestoRepository presupuestosRepository, IProductoRepository productoRepository, IAuthenticationService servicio)
     {
-        presupuestosRepository = new PresupuestosRepository();
-        productoRepository = new ProductoRepository();
+        this.presupuestosRepository = presupuestosRepository;
+        this.productoRepository = productoRepository;
+        this.servicio = servicio;
     }
 
     [HttpGet]
