@@ -7,10 +7,10 @@
 
 <h2>Login</h2>
 
-@if (ViewData["Error"] != null)
+@if (@Model.ErrorMessage != null)
 {
     <div class="text-danger">
-        @ViewData["Error"]
+        @Model.ErrorMessage
     </div>
 }
 

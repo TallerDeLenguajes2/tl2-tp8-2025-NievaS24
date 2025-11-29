@@ -8,7 +8,7 @@
         <ul class="list-group list-group-flush text-start mb-4">
             <li class="list-group-item"><strong>ID:</strong> @Model.idPresupuesto</li>
             <li class="list-group-item"><strong>Destinatario:</strong> @Model.NombreDestinatario</li>
-            <li class="list-group-item"><strong>Fecha de creación:</strong> $@Model.FechaCreacion</li>
+            <li class="list-group-item"><strong>Fecha de creación:</strong> @Model.FechaCreacion</li>
         </ul>
 
         <form asp-controller="Presupuestos" asp-action="DeleteConfirmed" method="post">
